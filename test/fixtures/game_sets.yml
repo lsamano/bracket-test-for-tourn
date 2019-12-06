@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  parent_id: 1
+  team_1_id: 1
+  team_2_id: 1
+  round_id: MyString
+
+two:
+  parent_id: 1
+  team_1_id: 1
+  team_2_id: 1
+  round_id: MyString
