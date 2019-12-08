@@ -16,7 +16,9 @@ team_names = [
   "Kagura",
   "Red Ink",
   "Squid Alpine",
-  "Hxagon"
+  "Hxagon",
+  "Horizon",
+  "Deep Blues"
 ]
 
 team_names.each do |team_name|
