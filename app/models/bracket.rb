@@ -21,16 +21,21 @@ class Bracket < ApplicationRecord
     # see above for definition
     array_of_first_games = finals_round.create_next_round(self.id, entrants)
 
-    shuffled_entrants = entrants.shuffle
-    array_of_first_games.each do |game_set|
-      game_set.update(
-        team_1_id: shuffled_entrants.shift()["id"],
-        team_2_id: shuffled_entrants.shift()["id"]
-      )
-    end
-    puts "worked"
+    # shuffled_entrants = entrants.shuffle
+    # array_of_first_games.each do |game_set|
+    #   game_set.update(
+    #     team_1_id: shuffled_entrants.shift()["id"],
+    #     team_2_id: shuffled_entrants.shift()["id"]
+    #   )
+    # end
+    # puts "worked"
     ### WIP iterate over array_of_first_games to fill them with entrants
   end
+
+  def populate_first_games(given_games)
+    # code
+  end
+
 end
 
 

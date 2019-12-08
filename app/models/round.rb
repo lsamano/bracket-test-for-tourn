@@ -29,10 +29,19 @@ class Round < ApplicationRecord
           while amount_of_games_to_make > 0
             # add children
             one_game_set = prev_rnd_games[index]
+            # puts entrants_array.length
+            if amount_of_games_to_make == 1 && entrants_array.length.odd?
             left_node = GameSet.create(parent_id: one_game_set.id, round_id: next_round.id)
-            right_node = GameSet.create(parent_id: one_game_set.id, round_id: next_round.id)
-            copy_games = copy_games.flat_map { |game_set| game_set.id == one_game_set.id ? [left_node, right_node] : game_set }
+            # byebug
+            ent_array = entrants_array.to_a.shuffle
+            one_game_set.update(team_2_id: ent_array.shift()["id"])
 
+            copy_games = copy_games.map { |game_set| game_set.id == one_game_set.id ? left_node : game_set }
+            else
+              left_node = GameSet.create(parent_id: one_game_set.id, round_id: next_round.id)
+              right_node = GameSet.create(parent_id: one_game_set.id, round_id: next_round.id)
+              copy_games = copy_games.flat_map { |game_set| game_set.id == one_game_set.id ? [left_node, right_node] : game_set }
+            end
             amount_of_games_to_make -= 1
             index += incrementer
           end
@@ -42,10 +51,18 @@ class Round < ApplicationRecord
           while index <= amount_of_prev_games - 1
             # add children
             one_game_set = prev_rnd_games[index]
+            if amount_of_games_to_make == 1 && entrants_array.length.odd?
             left_node = GameSet.create(parent_id: one_game_set.id, round_id: next_round.id)
-            right_node = GameSet.create(parent_id: one_game_set.id, round_id: next_round.id)
-            copy_games = copy_games.flat_map { |game_set| game_set.id == one_game_set.id ? [left_node, right_node] : game_set }
+            # byebug
+            ent_array = entrants_array.to_a.shuffle
+            one_game_set.update(team_2_id: ent_array.shift()["id"])
 
+            copy_games = copy_games.map { |game_set| game_set.id == one_game_set.id ? left_node : game_set }
+            else
+              left_node = GameSet.create(parent_id: one_game_set.id, round_id: next_round.id)
+              right_node = GameSet.create(parent_id: one_game_set.id, round_id: next_round.id)
+              copy_games = copy_games.flat_map { |game_set| game_set.id == one_game_set.id ? [left_node, right_node] : game_set }
+            end
             amount_of_games_to_make -= 1
             index += incrementer
           end
@@ -54,16 +71,36 @@ class Round < ApplicationRecord
           while amount_of_games_to_make > 0
             # add children
             one_game_set = prev_rnd_games[index]
+            if amount_of_games_to_make == 1 && entrants_array.length.odd?
             left_node = GameSet.create(parent_id: one_game_set.id, round_id: next_round.id)
-            right_node = GameSet.create(parent_id: one_game_set.id, round_id: next_round.id)
-            copy_games = copy_games.flat_map { |game_set| game_set.id == one_game_set.id ? [left_node, right_node] : game_set }
+            # byebug
+            ent_array = entrants_array.to_a.shuffle
+            one_game_set.update(team_2_id: ent_array.shift()["id"])
+
+            copy_games = copy_games.map { |game_set| game_set.id == one_game_set.id ? left_node : game_set }
+            else
+              left_node = GameSet.create(parent_id: one_game_set.id, round_id: next_round.id)
+              right_node = GameSet.create(parent_id: one_game_set.id, round_id: next_round.id)
+              copy_games = copy_games.flat_map { |game_set| game_set.id == one_game_set.id ? [left_node, right_node] : game_set }
+            end
 
             amount_of_games_to_make -= 1
             index += incrementer
           end
         end
         puts copy_games
-        return copy_games
+        # return copy_games
+        shuffled_entrants = ((ent_array && ent_array.shuffle) || entrants_array.shuffle)
+        copy_games.each do |game_set|
+          # puts shuffled_entrants.length
+          game_set.update(
+            team_1_id: shuffled_entrants.shift()["id"],
+            team_2_id: shuffled_entrants.shift()["id"]
+          )
+        end
+        puts "worked"
+
+
       else
         ## fill all next_round's game_sets with children
         prev_rnd_games.each do |game_set|
